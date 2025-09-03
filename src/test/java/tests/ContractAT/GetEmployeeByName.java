@@ -64,6 +64,7 @@ public class GetEmployeeByName {
 
         given().baseUri(URI).
                 when().get(endpoint + employeeName).
-                then().body("error", is("Employee with name '" + employeeName + "' not found"));
+                then().statusCode(404).
+                body("error", is("Employee with name '" + employeeName + "' not found"));
     }
 }

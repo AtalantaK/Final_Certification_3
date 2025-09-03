@@ -1,8 +1,8 @@
-package tests.ContractAT;
+package entities;
 
 import java.util.Objects;
 
-public class Employee {
+public class EmployeeResponse {
 
     private String city;
     private int id;
@@ -10,7 +10,7 @@ public class Employee {
     private String position;
     private String surname;
 
-    public Employee(String city, int id, String name, String position, String surname) {
+    public EmployeeResponse(String city, int id, String name, String position, String surname) {
         this.city = city;
         this.id = id;
         this.name = name;
@@ -18,9 +18,9 @@ public class Employee {
         this.surname = surname;
     }
 
-    public Employee(int id, String name, String position, String surname) {
+    public EmployeeResponse(int id, String name, String position, String surname) {
 
-        new Employee(null,id, name, position, surname);
+        new EmployeeResponse(null,id, name, position, surname);
     }
 
     public String getCity() {
@@ -77,7 +77,7 @@ public class Employee {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
+        EmployeeResponse employee = (EmployeeResponse) o;
         return id == employee.id && Objects.equals(city, employee.city) && Objects.equals(name, employee.name) && Objects.equals(position, employee.position) && Objects.equals(surname, employee.surname);
     }
 

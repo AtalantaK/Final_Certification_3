@@ -1,26 +1,15 @@
 package tests.ContractAT;
 
-import com.google.gson.Gson;
+import entities.EmployeeResponse;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
 
-@DisplayName("Контрактные кейсы для получения списка всех сотрудников")
-public class getEmployees {
+@DisplayName("Contract AT. Получение списка всех сотрудников")
+public class GetEmployees {
 
     //given() — что отправляем, when() — куда отправляем, then() — что ожидаем
 
@@ -45,17 +34,17 @@ public class getEmployees {
 
     @Test
     @DisplayName("Проверить тело ответа")
-    //todo: дописать проверку или удалить этот кейс
+    //todo: дописать проверку - а, ну мы можем получить данные из БД и сравнить с данными из АПИ!
     public void checkResponseBodyTest() {
 
-        Employee[] employees = given().baseUri(URI).
+        EmployeeResponse[] employees = given().baseUri(URI).
 //                log().all().
                 when().get(endpoint).
                 then().
 //                log().all().
-                extract().as(Employee[].class);
+                extract().as(EmployeeResponse[].class);
 
-        for (Employee employee : employees) {
+        for (EmployeeResponse employee : employees) {
             System.out.println(employee);
         }
     }

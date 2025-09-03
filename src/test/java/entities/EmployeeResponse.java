@@ -18,6 +18,9 @@ public class EmployeeResponse {
         this.surname = surname;
     }
 
+    public EmployeeResponse() {
+    }
+
     public EmployeeResponse(int id, String name, String position, String surname) {
 
         new EmployeeResponse(null,id, name, position, surname);

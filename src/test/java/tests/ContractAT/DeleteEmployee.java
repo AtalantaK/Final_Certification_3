@@ -29,7 +29,7 @@ public class DeleteEmployee {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        int employeeId = UsefulMethods.createEmployee().path("id");
+        int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
 
         given().baseUri(URI).
                 log().all().
@@ -42,7 +42,7 @@ public class DeleteEmployee {
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        int employeeId = UsefulMethods.createEmployee().path("id");
+        int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
 
         given().baseUri(URI).
                 log().all().

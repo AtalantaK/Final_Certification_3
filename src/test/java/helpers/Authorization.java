@@ -18,15 +18,11 @@ public class Authorization {
         RestAssured.useRelaxedHTTPSValidation();
         User requestJSON = new User(username, password);
 
-        String token = given().
+        return given().
                 baseUri(URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 //log().all().
                 when().post(endpoint).path("token");
-
-        //System.out.println(token);
-
-        return token;
     }
 
     public static void main(String[] args) {

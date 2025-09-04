@@ -17,13 +17,13 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Business AT. Получить сотрудника по имени")
-public class GetEmployeeByName {
+@DisplayName("Business AT. Получить сотрудника по ID")
+public class GetEmployeeByID {
     private static EntityManager entityManager;
     private static EnvHelper envHelper;
 
     @Test
-    public void getEmployeeByName() throws IOException {
+    public void getEmployeeByID() throws IOException {
         envHelper = new EnvHelper();
         Properties properties = envHelper.getProperties();
         PersistenceUnitInfo myPui = new MyPUI(properties);
@@ -31,10 +31,8 @@ public class GetEmployeeByName {
         EntityManagerFactory emf = hibernatePersistenceProvider.createContainerEntityManagerFactory(myPui, myPui.getProperties());
         entityManager = emf.createEntityManager();
 
-        String employeeName = "Kseniia";
-
         //Создаем сотрудника
-        EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name(employeeName).position("QA").surname("Kalashnikova").build();
+        EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("QA").surname("Kalashnikova").build();
 
         //Вставляем сотрудника в БД
         entityManager.getTransaction().begin();
@@ -43,7 +41,7 @@ public class GetEmployeeByName {
 
         int employeeId = employee.getId();
 
-        EmployeeResponse employeeResponse = UsefulMethods.getEmployeeByName(employeeName).as(EmployeeResponse.class);
+        EmployeeResponse employeeResponse = UsefulMethods.getEmployeeByID(employeeId).as(EmployeeResponse.class);
 
         entityManager.clear(); // очищаем контекст
 
@@ -57,6 +55,6 @@ public class GetEmployeeByName {
         entityManager.remove(employeeDB); //удаляем сущность
         entityManager.getTransaction().commit();
 
-        assertThat(employeeResponse.getName()).isEqualTo(employeeDB.getName());
+        assertThat(employeeResponse).isEqualTo(employeeDB);
     }
 }

@@ -1,13 +1,11 @@
 package helpers;
 
 import entities.EmployeeRequest;
-import entities.EmployeeResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class UsefulMethods {
     public static Response createEmployee(String city, String name, String position, String surname) {
@@ -21,11 +19,15 @@ public class UsefulMethods {
 
         System.out.println("Создаю сотрудника...");
 
-        return given().baseUri(URI).
+        Response response = given().baseUri(URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
                 when().post(endpoint);
+
+        System.out.println("Создан сотрудник с id = " + response.path("id"));
+
+        return response;
     }
 
     public static Response deleteEmployee(int employeeId) {
@@ -36,9 +38,13 @@ public class UsefulMethods {
 
         System.out.println("Удаляю сотрудника с id = " + employeeId);
 
-        return given().baseUri(URI).
+        Response response = given().baseUri(URI).
                 log().all().
                 when().delete(endpoint + employeeId);
+
+        System.out.println("Удалён сотрудник с id = " + employeeId);
+
+        return response;
 
     }
 

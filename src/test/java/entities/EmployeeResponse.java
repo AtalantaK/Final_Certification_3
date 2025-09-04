@@ -1,13 +1,28 @@
 package entities;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "employee", schema = "public", catalog = "employee_postgres")
 public class EmployeeResponse {
 
+    @Column
     private String city;
+
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column
     private String name;
+
+    @Column
     private String position;
+
+    @Column
     private String surname;
 
     public EmployeeResponse(String city, int id, String name, String position, String surname) {

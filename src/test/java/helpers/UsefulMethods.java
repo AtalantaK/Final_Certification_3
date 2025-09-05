@@ -101,4 +101,12 @@ public class UsefulMethods {
                 log().all().
                 when().put(endpoint + id);
     }
+
+    public static Response getEmployees() {
+        String endpoint = "/employees";
+
+        return given().baseUri(URI).
+                log().all().
+                when().get(endpoint);
+    }
 }

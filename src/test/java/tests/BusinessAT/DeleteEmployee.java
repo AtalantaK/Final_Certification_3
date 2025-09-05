@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("Business AT. Удаление сотрудника")
 public class DeleteEmployee {
@@ -25,6 +23,7 @@ public class DeleteEmployee {
     private static EnvHelper envHelper;
 
     @Test
+    @DisplayName("Удаление сотрудника")
     public void deleteEmployee() throws IOException {
         envHelper = new EnvHelper();
         Properties properties = envHelper.getProperties();

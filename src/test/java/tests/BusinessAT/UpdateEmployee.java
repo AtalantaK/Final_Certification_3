@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Business AT. Обновить информацию о сотруднике")
 public class UpdateEmployee {

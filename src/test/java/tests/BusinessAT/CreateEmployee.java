@@ -24,7 +24,8 @@ public class CreateEmployee {
     private static EnvHelper envHelper;
 
     @Test
-    public void getEmployeeByID() throws IOException {
+    @DisplayName("Создание нового сотрудника")
+    public void createEmployee() throws IOException {
         envHelper = new EnvHelper();
         Properties properties = envHelper.getProperties();
         PersistenceUnitInfo myPui = new MyPUI(properties);

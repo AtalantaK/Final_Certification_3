@@ -39,20 +39,13 @@ public class GetEmployees {
 
         EmployeeResponse[] employees = given().baseUri(URI).
 //                log().all().
-                when().get(endpoint).
+        when().get(endpoint).
                 then().
 //                log().all().
-                extract().as(EmployeeResponse[].class);
+        extract().as(EmployeeResponse[].class);
 
         for (EmployeeResponse employee : employees) {
             System.out.println(employee);
         }
     }
-
-//    public static void main(String[] args) {
-//        Employee employee1 = new Employee(100, "Xenia", "QA", "K.");
-//        Employee employee2 = new Employee("Moscow", 200, "Anton", "DEV", "B.");
-//        System.out.println(employee1);
-//        System.out.println(employee2);
-//    }
 }

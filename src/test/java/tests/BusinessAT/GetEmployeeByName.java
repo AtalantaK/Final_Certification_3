@@ -23,6 +23,7 @@ public class GetEmployeeByName {
     private static EnvHelper envHelper;
 
     @Test
+    @DisplayName("Получить сотрудника по имени")
     public void getEmployeeByName() throws IOException {
         envHelper = new EnvHelper();
         Properties properties = envHelper.getProperties();

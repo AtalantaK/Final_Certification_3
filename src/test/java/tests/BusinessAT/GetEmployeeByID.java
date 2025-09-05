@@ -48,10 +48,6 @@ public class GetEmployeeByID {
         //Ищем в БД нашего созданного сотрудника
         entityManager.getTransaction().begin();
         EmployeeResponse employeeDB = entityManager.find(EmployeeResponse.class, employeeId); //ищем сущность по первичному ключу
-        entityManager.getTransaction().commit();
-
-        //Удаляем за собой созданного сотрудника из БД
-        entityManager.getTransaction().begin();
         entityManager.remove(employeeDB); //удаляем сущность
         entityManager.getTransaction().commit();
 

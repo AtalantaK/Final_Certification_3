@@ -4,12 +4,18 @@ import entities.EmployeeRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import tests.ContractAT.UpdateEmployee;
 
 import static io.restassured.RestAssured.given;
 
 public class UsefulMethods {
+
+    private static String URI = "https://innopolispython.onrender.com";
+
     public static Response createEmployee(String city, String name, String position, String surname) {
-        String URI = "https://innopolispython.onrender.com";
+
         String endpoint = "/employee";
 
         RestAssured.useRelaxedHTTPSValidation();
@@ -31,7 +37,7 @@ public class UsefulMethods {
     }
 
     public static Response deleteEmployee(int employeeId) {
-        String URI = "https://innopolispython.onrender.com";
+
         String endpoint = "/employee/";
 
         RestAssured.useRelaxedHTTPSValidation();
@@ -49,7 +55,7 @@ public class UsefulMethods {
     }
 
     public static Response getEmployeeByName(String employeeName) {
-        String URI = "https://innopolispython.onrender.com";
+
         String endpoint = "/employee/name/";
 
         return given().baseUri(URI).
@@ -59,7 +65,6 @@ public class UsefulMethods {
 
     public static Response getEmployeeByID(int employeeId) {
 
-        String URI = "https://innopolispython.onrender.com";
         String endpoint = "/employee/";
 
         System.out.println("Ищу сотрудника с id = " + employeeId);
@@ -67,5 +72,33 @@ public class UsefulMethods {
         return given().baseUri(URI).
                 log().all().
                 when().get(endpoint + employeeId);
+    }
+
+    public static Response updateEmployeeCompletely(int id, String city, String name, String position, String surname) {
+
+        String endpoint = "/employee/";
+
+        EmployeeRequest requestJSON = EmployeeRequest.builder().city(city).name(name).position(position).surname(surname).build();
+        String token = Authorization.getToken();
+
+        return given().baseUri(URI).
+                body(requestJSON).contentType(ContentType.JSON).
+                auth().oauth2(token).
+                log().all().
+                when().put(endpoint + id);
+    }
+
+    public static Response updateEmployeeCityPosition(int id, String city, String position) {
+
+        String endpoint = "/employee/";
+
+        EmployeeRequest requestJSON = EmployeeRequest.builder().city(city).position(position).build();
+        String token = Authorization.getToken();
+
+        return given().baseUri(URI).
+                body(requestJSON).contentType(ContentType.JSON).
+                auth().oauth2(token).
+                log().all().
+                when().put(endpoint + id);
     }
 }

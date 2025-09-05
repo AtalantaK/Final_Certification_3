@@ -39,7 +39,7 @@ public class UsefulMethods {
 
         Response response = given().baseUri(Endpoints.URI).
                 log().all().
-                when().delete(Endpoints.EMPLOYEE + employeeId);
+                when().delete(Endpoints.EMPLOYEE + "/" + employeeId);
 
         System.out.println("Удалён сотрудник с id = " + employeeId);
 
@@ -53,7 +53,7 @@ public class UsefulMethods {
 
         return given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(Endpoints.EMPLOYEE + Endpoints.NAME + employeeName);
+                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName);
     }
 
     public static Response getEmployeeByID(int employeeId) {
@@ -62,7 +62,7 @@ public class UsefulMethods {
 
         return given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(Endpoints.EMPLOYEE + employeeId);
+                when().get(Endpoints.EMPLOYEE + "/" + employeeId);
     }
 
     public static Response updateEmployeeCompletely(int employeeId, String city, String name, String position, String surname) {
@@ -76,7 +76,7 @@ public class UsefulMethods {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId);
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId);
     }
 
     public static Response updateEmployeeCityPosition(int employeeId, String city, String position) {
@@ -90,7 +90,7 @@ public class UsefulMethods {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId);
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId);
     }
 
     public static Response getEmployees() {

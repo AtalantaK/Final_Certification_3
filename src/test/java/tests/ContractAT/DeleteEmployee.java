@@ -1,11 +1,8 @@
 package tests.ContractAT;
 
-import entities.EmployeeRequest;
-import helpers.Authorization;
+import helpers.Endpoints;
 import helpers.UsefulMethods;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -16,9 +13,6 @@ import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Удалить сотрудника по айди")
 public class DeleteEmployee {
-
-    private static String URI = "https://innopolispython.onrender.com";
-    private static String endpoint = "/employee/";
 
     @BeforeAll
     public static void setUp() {
@@ -31,9 +25,9 @@ public class DeleteEmployee {
 
         int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
 
-        given().baseUri(URI).
+        given().baseUri(Endpoints.URI).
                 log().all().
-                when().delete(endpoint + employeeId).
+                when().delete(Endpoints.EMPLOYEE + employeeId).
                 then().statusCode(200).
                 log().all();
     }
@@ -44,9 +38,9 @@ public class DeleteEmployee {
 
         int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
 
-        given().baseUri(URI).
+        given().baseUri(Endpoints.URI).
                 log().all().
-                when().delete(endpoint + employeeId).
+                when().delete(Endpoints.EMPLOYEE + employeeId).
                 then().body("message", is("Deleted")).
                 log().all();
     }
@@ -58,9 +52,9 @@ public class DeleteEmployee {
 
         int employeeId = 12345;
 
-        given().baseUri(URI).
+        given().baseUri(Endpoints.URI).
                 log().all().
-                when().delete(endpoint + employeeId).
+                when().delete(Endpoints.EMPLOYEE + employeeId).
                 then().statusCode(404).
                 body("message", is("Employee with employee_id = " + employeeId + " not found")).
                 log().all();

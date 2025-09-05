@@ -1,6 +1,7 @@
 package tests.ContractAT;
 
 import entities.EmployeeResponse;
+import helpers.Endpoints;
 import helpers.UsefulMethods;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,8 +14,6 @@ import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Получить сотрудника по ID")
 public class GetEmployeeByID {
-    private static String URI = "https://innopolispython.onrender.com";
-    private static String endpoint = "/employee/";
 
     @BeforeAll
     public static void setUp() {
@@ -27,11 +26,10 @@ public class GetEmployeeByID {
 
         int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
 
-        given().baseUri(URI).
-                //log().all().
-                        when().get(endpoint + employeeId).
+        given().baseUri(Endpoints.URI).
+                log().all().
+                when().get(Endpoints.EMPLOYEE + employeeId).
                 then().statusCode(200);
-        //log().all();
 
         UsefulMethods.deleteEmployee(employeeId);
     }
@@ -43,9 +41,9 @@ public class GetEmployeeByID {
         int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
         EmployeeResponse expectedEmployeeResponse = new EmployeeResponse("Samara", employeeId, "Kseniia", "Senior QA", "Kalashnikova");
 
-        EmployeeResponse actualEmployeeResponse = given().baseUri(URI).
-                //log().all().
-                        when().get(endpoint + employeeId).
+        EmployeeResponse actualEmployeeResponse = given().baseUri(Endpoints.URI).
+                log().all().
+                when().get(Endpoints.EMPLOYEE + employeeId).
                 then().extract().as(EmployeeResponse.class);
 
         assertThat(expectedEmployeeResponse).isEqualTo(actualEmployeeResponse);
@@ -59,8 +57,8 @@ public class GetEmployeeByID {
 
         int employeeId = 12345678;
 
-        given().baseUri(URI).
-                when().get(endpoint + employeeId).
+        given().baseUri(Endpoints.URI).
+                when().get(Endpoints.EMPLOYEE + employeeId).
                 then().statusCode(404).
                 body("error", is("Employee with id '" + employeeId + "' not found"));
     }

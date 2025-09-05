@@ -4,19 +4,12 @@ import entities.EmployeeRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import tests.ContractAT.UpdateEmployee;
 
 import static io.restassured.RestAssured.given;
 
 public class UsefulMethods {
 
-    private static String URI = "https://innopolispython.onrender.com";
-
     public static Response createEmployee(String city, String name, String position, String surname) {
-
-        String endpoint = "/employee";
 
         RestAssured.useRelaxedHTTPSValidation();
 
@@ -25,11 +18,11 @@ public class UsefulMethods {
 
         System.out.println("Создаю сотрудника...");
 
-        Response response = given().baseUri(URI).
+        Response response = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().post(endpoint);
+                when().post(Endpoints.EMPLOYEE);
 
         System.out.println("Создан сотрудник с id = " + response.path("id"));
 
@@ -38,15 +31,13 @@ public class UsefulMethods {
 
     public static Response deleteEmployee(int employeeId) {
 
-        String endpoint = "/employee/";
-
         RestAssured.useRelaxedHTTPSValidation();
 
-        System.out.println("Удаляю сотрудника с id = " + employeeId);
+        System.out.println("Удаляю сотрудника с id = " + employeeId + "...");
 
-        Response response = given().baseUri(URI).
+        Response response = given().baseUri(Endpoints.URI).
                 log().all().
-                when().delete(endpoint + employeeId);
+                when().delete(Endpoints.EMPLOYEE + employeeId);
 
         System.out.println("Удалён сотрудник с id = " + employeeId);
 
@@ -56,57 +47,56 @@ public class UsefulMethods {
 
     public static Response getEmployeeByName(String employeeName) {
 
-        String endpoint = "/employee/name/";
+        System.out.println("Ищу сотрудника с именем = " + employeeName + "...");
 
-        return given().baseUri(URI).
+        return given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(endpoint + employeeName);
+                when().get(Endpoints.EMPLOYEE + Endpoints.NAME + employeeName);
     }
 
     public static Response getEmployeeByID(int employeeId) {
 
-        String endpoint = "/employee/";
+        System.out.println("Ищу сотрудника с id = " + employeeId + "...");
 
-        System.out.println("Ищу сотрудника с id = " + employeeId);
-
-        return given().baseUri(URI).
+        return given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(endpoint + employeeId);
+                when().get(Endpoints.EMPLOYEE + employeeId);
     }
 
-    public static Response updateEmployeeCompletely(int id, String city, String name, String position, String surname) {
-
-        String endpoint = "/employee/";
+    public static Response updateEmployeeCompletely(int employeeId, String city, String name, String position, String surname) {
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().city(city).name(name).position(position).surname(surname).build();
         String token = Authorization.getToken();
 
-        return given().baseUri(URI).
+        System.out.println("Полностью обновляю сотрудника с id = " + employeeId + "...");
+
+        return given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + id);
+                when().put(Endpoints.EMPLOYEE + employeeId);
     }
 
-    public static Response updateEmployeeCityPosition(int id, String city, String position) {
+    public static Response updateEmployeeCityPosition(int employeeId, String city, String position) {
 
-        String endpoint = "/employee/";
+        System.out.println("Частично обновляю сотрудника с id = " + employeeId + "...");
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().city(city).position(position).build();
         String token = Authorization.getToken();
 
-        return given().baseUri(URI).
+        return given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + id);
+                when().put(Endpoints.EMPLOYEE + employeeId);
     }
 
     public static Response getEmployees() {
-        String endpoint = "/employees";
 
-        return given().baseUri(URI).
+        System.out.println("Получаю список всех сотрудников...");
+
+        return given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(endpoint);
+                when().get(Endpoints.EMPLOYEES);
     }
 }

@@ -8,8 +8,6 @@ import static io.restassured.RestAssured.given;
 
 public class Authorization {
 
-    private static String URI = "https://innopolispython.onrender.com";
-    private static String endpoint = "/login";
     private static String username = "admin";
     private static String password = "admin";
 
@@ -19,10 +17,10 @@ public class Authorization {
         User requestJSON = new User(username, password);
 
         return given().
-                baseUri(URI).
+                baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
-                //log().all().
-                when().post(endpoint).path("token");
+                log().all().
+                when().post(Endpoints.AUTH).path("token");
     }
 
     public static void main(String[] args) {

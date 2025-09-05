@@ -3,6 +3,7 @@ package tests.ContractAT;
 import entities.EmployeeRequest;
 import entities.ErrorResponse;
 import helpers.Authorization;
+import helpers.Endpoints;
 import helpers.UsefulMethods;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -19,9 +20,6 @@ import static org.hamcrest.Matchers.*;
 @DisplayName("Contract AT. Создание нового сотрудника")
 public class CreateEmployee {
 
-    private static String URI = "https://innopolispython.onrender.com";
-    private static String endpoint = "/employee";
-
     @BeforeAll
     public static void setUp() {
         RestAssured.useRelaxedHTTPSValidation();
@@ -33,11 +31,11 @@ public class CreateEmployee {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").position("QA").surname("Ivanov").build();
         String token = Authorization.getToken();
 
-        int id = given().baseUri(URI).
+        int id = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().post(endpoint).
+                when().post(Endpoints.EMPLOYEE).
                 then().statusCode(201).
                 extract().path("id");
 
@@ -50,11 +48,11 @@ public class CreateEmployee {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").position("QA").surname("Ivanov").build();
         String token = Authorization.getToken();
 
-        int id = given().baseUri(URI).
+        int id = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().post(endpoint).
+                when().post(Endpoints.EMPLOYEE).
                 then().
                 body("id", is(not(blankString()))).
                 body("message", is("Employee created successfully")).
@@ -70,11 +68,11 @@ public class CreateEmployee {
         EmployeeRequest requestJSON = EmployeeRequest.builder().name("Ivan").position("QA").surname("Ivanov").build();
         String token = Authorization.getToken();
 
-        Response response = given().baseUri(URI).
+        Response response = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().post(endpoint);
+                when().post(Endpoints.EMPLOYEE);
 
         System.out.println(response.prettyPrint());
 
@@ -89,11 +87,11 @@ public class CreateEmployee {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").position("QA").surname("Ivanov").build();
         String token = Authorization.getToken();
 
-        ErrorResponse actualErrorResponse = given().baseUri(URI).
+        ErrorResponse actualErrorResponse = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().post(endpoint).
+                when().post(Endpoints.EMPLOYEE).
                 then().
                 extract().as(ErrorResponse.class);
 
@@ -110,11 +108,11 @@ public class CreateEmployee {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").build();
         String token = Authorization.getToken();
 
-        ErrorResponse actualErrorResponse = given().baseUri(URI).
+        ErrorResponse actualErrorResponse = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().post(endpoint).
+                when().post(Endpoints.EMPLOYEE).
                 then().
                 extract().as(ErrorResponse.class);
 

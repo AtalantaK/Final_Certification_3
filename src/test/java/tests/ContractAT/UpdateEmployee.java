@@ -4,11 +4,10 @@ import entities.EmployeeRequest;
 import entities.ResponseMessage;
 import entities.ValidationErrorResponse;
 import helpers.Authorization;
+import helpers.Endpoints;
 import helpers.UsefulMethods;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +21,7 @@ import static org.hamcrest.Matchers.is;
 
 @DisplayName("Обновить информацию о сотруднике")
 public class UpdateEmployee {
-    private static final Log log = LogFactory.getLog(UpdateEmployee.class);
-    private static String URI = "https://innopolispython.onrender.com";
-    private static String endpoint = "/employee/";
+//    private static final Log log = LogFactory.getLog(UpdateEmployee.class);
 
     @BeforeAll
     public static void setUp() {
@@ -40,11 +37,11 @@ public class UpdateEmployee {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Kseniia").position("AQA").surname("Kalashnikova").build();
         String token = Authorization.getToken();
 
-        given().baseUri(URI).
+        given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + employeeId).
+                when().put(Endpoints.EMPLOYEE + employeeId).
                 then().statusCode(200);
 
         UsefulMethods.deleteEmployee(employeeId);
@@ -61,11 +58,11 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(URI).
+        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + employeeId).
+                when().put(Endpoints.EMPLOYEE + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -96,11 +93,11 @@ public class UpdateEmployee {
 
         ValidationErrorResponse expectedResponseMessage = new ValidationErrorResponse("Invalid field types", "All fields must be strings", wrongTypeFields);
 
-        ValidationErrorResponse actualResponseMessage = given().baseUri(URI).
+        ValidationErrorResponse actualResponseMessage = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + employeeId).
+                when().put(Endpoints.EMPLOYEE + employeeId).
                 then().
                 statusCode(400).
                 extract().as(ValidationErrorResponse.class);
@@ -119,11 +116,11 @@ public class UpdateEmployee {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Kseniia").position("AQA").surname("Kalashnikova").build();
         String token = Authorization.getToken();
 
-        given().baseUri(URI).
+        given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + employeeId).
+                when().put(Endpoints.EMPLOYEE + employeeId).
                 then().statusCode(404).body("error", is("Employee with id '" + employeeId + "' not found"));
     }
 
@@ -138,11 +135,11 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(URI).
+        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + employeeId).
+                when().put(Endpoints.EMPLOYEE + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -161,11 +158,11 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(URI).
+        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + employeeId).
+                when().put(Endpoints.EMPLOYEE + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -184,11 +181,11 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(URI).
+        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + employeeId).
+                when().put(Endpoints.EMPLOYEE + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -207,11 +204,11 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(URI).
+        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(endpoint + employeeId).
+                when().put(Endpoints.EMPLOYEE + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);

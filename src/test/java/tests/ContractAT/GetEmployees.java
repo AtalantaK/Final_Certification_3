@@ -1,6 +1,6 @@
 package tests.ContractAT;
 
-import entities.EmployeeResponse;
+import helpers.Endpoints;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -11,11 +11,6 @@ import static io.restassured.RestAssured.given;
 @DisplayName("Contract AT. Получение списка всех сотрудников")
 public class GetEmployees {
 
-    //given() — что отправляем, when() — куда отправляем, then() — что ожидаем
-
-    private static String URI = "https://innopolispython.onrender.com";
-    private static String endpoint = "/employees";
-
     @BeforeAll
     public static void setUp() {
         RestAssured.useRelaxedHTTPSValidation();
@@ -25,27 +20,10 @@ public class GetEmployees {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        given().baseUri(URI).
+        given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(endpoint).
+                when().get(Endpoints.EMPLOYEES).
                 then().statusCode(200).
                 log().all();
-    }
-
-    @Test
-    @DisplayName("Проверить тело ответа")
-    //todo: дописать проверку - а, ну мы можем получить данные из БД и сравнить с данными из АПИ!
-    public void checkResponseBodyTest() {
-
-        EmployeeResponse[] employees = given().baseUri(URI).
-//                log().all().
-        when().get(endpoint).
-                then().
-//                log().all().
-        extract().as(EmployeeResponse[].class);
-
-        for (EmployeeResponse employee : employees) {
-            System.out.println(employee);
-        }
     }
 }

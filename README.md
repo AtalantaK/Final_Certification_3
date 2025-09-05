@@ -1,9 +1,13 @@
-### Note: Автотесты с актуальными дефектами отключены и помечены как "Есть актуальный баг"
+![Сообщение](https://img.shields.io/badge/Автотесты%20с%20актуальными%20дефектами%20отключены%20и%20помечены%20как%20"Есть%20актуальный%20баг"-red)
 
-# Промежуточная аттестация 3
-## Напишите автотесты на API сервиса x-clients, модуль employee
+Note: Иногда сервер засыпает минут через 20
+
+<h1> Промежуточная аттестация 3</h1>
+<h2> Напишите автотесты на API сервиса x-clients, модуль employee</h2>
 <h3> Тесты должны покрывать следующие эндпоинты:</h3>
-<img src="Swagger.jpg" alt="Swagger" width="500"/><br>
+<img src="Swagger.jpg" alt="Swagger" width="500"/>
+
+**Условия:**
 - Тесты должны быть как позитивные, так и негативные
 - Тесты должны быть контрактные и на бизнес-логику
 - Обязательно необходимо использовать работу с БД для создания предусловий/постусловий
@@ -11,10 +15,11 @@
 - Решение сдается в виде ссылки на репозиторий + архив.
 
 <h3> Реквизиты </h3>
-Swagger: https://innopolispython.onrender.com/apidocs/#/<br>
-Данные для подкл. к БД:<br>
-Строка: postgresql://dpg-d2o8fqjipnbc73begg4g-a.oregon-postgres.render.com/employee_postgres_2<br>
-Логин: admin<br>
-Пароль: azaHlBwfeeGxwEUt07mK6xtGrwBC1DCK<br>
+
+- Swagger: https://innopolispython.onrender.com/apidocs/#/<br>
+- Данные для подкл. к БД:<br>
+- Строка: postgresql://dpg-d2o8fqjipnbc73begg4g-a.oregon-postgres.render.com/employee_postgres_2<br>
+- Логин: admin<br>
+- Пароль: azaHlBwfeeGxwEUt07mK6xtGrwBC1DCK<br>
 
 

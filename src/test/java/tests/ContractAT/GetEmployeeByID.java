@@ -28,7 +28,7 @@ public class GetEmployeeByID {
 
         given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(Endpoints.EMPLOYEE + employeeId).
+                when().get(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(200);
 
         UsefulMethods.deleteEmployee(employeeId);
@@ -43,7 +43,7 @@ public class GetEmployeeByID {
 
         EmployeeResponse actualEmployeeResponse = given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(Endpoints.EMPLOYEE + employeeId).
+                when().get(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(EmployeeResponse.class);
 
         assertThat(expectedEmployeeResponse).isEqualTo(actualEmployeeResponse);
@@ -58,7 +58,7 @@ public class GetEmployeeByID {
         int employeeId = 12345678;
 
         given().baseUri(Endpoints.URI).
-                when().get(Endpoints.EMPLOYEE + employeeId).
+                when().get(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(404).
                 body("error", is("Employee with id '" + employeeId + "' not found"));
     }

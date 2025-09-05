@@ -27,7 +27,7 @@ public class DeleteEmployee {
 
         given().baseUri(Endpoints.URI).
                 log().all().
-                when().delete(Endpoints.EMPLOYEE + employeeId).
+                when().delete(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(200).
                 log().all();
     }
@@ -40,7 +40,7 @@ public class DeleteEmployee {
 
         given().baseUri(Endpoints.URI).
                 log().all().
-                when().delete(Endpoints.EMPLOYEE + employeeId).
+                when().delete(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().body("message", is("Deleted")).
                 log().all();
     }
@@ -54,7 +54,7 @@ public class DeleteEmployee {
 
         given().baseUri(Endpoints.URI).
                 log().all().
-                when().delete(Endpoints.EMPLOYEE + employeeId).
+                when().delete(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(404).
                 body("message", is("Employee with employee_id = " + employeeId + " not found")).
                 log().all();

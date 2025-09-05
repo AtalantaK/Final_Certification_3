@@ -41,7 +41,7 @@ public class UpdateEmployee {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId).
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(200);
 
         UsefulMethods.deleteEmployee(employeeId);
@@ -62,7 +62,7 @@ public class UpdateEmployee {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId).
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -97,7 +97,7 @@ public class UpdateEmployee {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId).
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().
                 statusCode(400).
                 extract().as(ValidationErrorResponse.class);
@@ -120,7 +120,7 @@ public class UpdateEmployee {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId).
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(404).body("error", is("Employee with id '" + employeeId + "' not found"));
     }
 
@@ -128,7 +128,9 @@ public class UpdateEmployee {
     @DisplayName("Обновить только Город")
     public void updateCityTest() {
 
+        System.out.println("here");
         int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        System.out.println("here 2");
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").build();
         String token = Authorization.getToken();
@@ -139,7 +141,7 @@ public class UpdateEmployee {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId).
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -162,7 +164,7 @@ public class UpdateEmployee {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId).
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -185,7 +187,7 @@ public class UpdateEmployee {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId).
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -208,7 +210,7 @@ public class UpdateEmployee {
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
-                when().put(Endpoints.EMPLOYEE + employeeId).
+                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);

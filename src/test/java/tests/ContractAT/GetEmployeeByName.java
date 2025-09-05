@@ -30,7 +30,7 @@ public class GetEmployeeByName {
 
         given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(Endpoints.EMPLOYEE + Endpoints.NAME + employeeName).
+                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName).
                 then().statusCode(200);
 
         UsefulMethods.deleteEmployee(employeeId);
@@ -45,7 +45,7 @@ public class GetEmployeeByName {
 
         EmployeeResponse employeeResponse = given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(Endpoints.EMPLOYEE + Endpoints.NAME + employeeName).
+                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName).
                 then().extract().as(EmployeeResponse.class);
 
         assertThat(employeeResponse.getName()).isEqualTo(employeeName);
@@ -60,7 +60,7 @@ public class GetEmployeeByName {
         String employeeName = "TestKseniiaForAT";
 
         given().baseUri(Endpoints.URI).
-                when().get(Endpoints.EMPLOYEE + Endpoints.NAME + employeeName).
+                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName).
                 then().statusCode(404).
                 body("error", is("Employee with name '" + employeeName + "' not found"));
     }

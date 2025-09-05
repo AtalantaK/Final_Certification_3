@@ -24,6 +24,8 @@ public class UsefulMethods {
                 log().all().
                 when().post(Endpoints.EMPLOYEE);
 
+        System.out.println(response);
+
         System.out.println("Создан сотрудник с id = " + response.path("id"));
 
         return response;

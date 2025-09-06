@@ -1,19 +1,10 @@
 package tests.BusinessAT;
 
 import entities.EmployeeResponse;
-import helpers.EnvHelper;
 import helpers.UsefulMethodsAPI;
 import helpers.UsefulMethodsDB;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.spi.PersistenceUnitInfo;
-import manager.MyPUI;
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

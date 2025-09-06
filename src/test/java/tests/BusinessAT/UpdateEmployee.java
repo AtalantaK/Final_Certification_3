@@ -2,57 +2,34 @@ package tests.BusinessAT;
 
 import entities.EmployeeRequest;
 import entities.EmployeeResponse;
-import helpers.EnvHelper;
 import helpers.UsefulMethodsAPI;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.spi.PersistenceUnitInfo;
-import manager.MyPUI;
-import org.hibernate.jpa.HibernatePersistenceProvider;
+import helpers.UsefulMethodsDB;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Business AT. Обновить информацию о сотруднике")
 public class UpdateEmployee {
-    private static EntityManager entityManager;
-    private static EnvHelper envHelper;
 
     @Test
     @DisplayName("Обновить сотрудника полностью")
-    public void updateEmployeeCompletely() throws IOException {
-        envHelper = new EnvHelper();
-        Properties properties = envHelper.getProperties();
-        PersistenceUnitInfo myPui = new MyPUI(properties);
-        HibernatePersistenceProvider hibernatePersistenceProvider = new HibernatePersistenceProvider();
-        EntityManagerFactory emf = hibernatePersistenceProvider.createContainerEntityManagerFactory(myPui, myPui.getProperties());
-        entityManager = emf.createEntityManager();
+    public void updateEmployeeCompletely() {
 
         //Создаем сотрудника
         EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
 
         //Вставляем сотрудника в БД
-        entityManager.getTransaction().begin();
-        entityManager.persist(employee); //сохраняем сущность в БД
-        entityManager.getTransaction().commit();
-
-        int employeeId = employee.getId();
-
-        entityManager.clear(); // очищаем контекст
+        int employeeId = UsefulMethodsDB.createEmployeeDB(employee);
 
         //Обновляем сотрудника через API
         UsefulMethodsAPI.updateEmployeeCompletelyAPI(employeeId, "Moscow", "Xenia", "AQA", "Ivanova");
         EmployeeResponse employeeResponse = new EmployeeResponse("Moscow", employeeId, "Xenia", "AQA", "Ivanova");
 
         //Ищем в БД нашего обновленного сотрудника
-        entityManager.getTransaction().begin();
-        EmployeeResponse employeeDB = entityManager.find(EmployeeResponse.class, employeeId); //ищем сущность по первичному ключу
-        entityManager.remove(employeeDB); //удаляем сущность
-        entityManager.getTransaction().commit();
+        EmployeeResponse employeeDB = UsefulMethodsDB.getEmployeeDB(employeeId);
+
+        UsefulMethodsDB.deleteEmployeeDB(employeeDB);
 
         assertThat(employeeResponse).isEqualTo(employeeDB);
 
@@ -60,35 +37,22 @@ public class UpdateEmployee {
 
     @Test
     @DisplayName("Обновить сотрудника частично")
-    public void updateEmployeePartially() throws IOException {
-        envHelper = new EnvHelper();
-        Properties properties = envHelper.getProperties();
-        PersistenceUnitInfo myPui = new MyPUI(properties);
-        HibernatePersistenceProvider hibernatePersistenceProvider = new HibernatePersistenceProvider();
-        EntityManagerFactory emf = hibernatePersistenceProvider.createContainerEntityManagerFactory(myPui, myPui.getProperties());
-        entityManager = emf.createEntityManager();
+    public void updateEmployeePartially() {
 
         //Создаем сотрудника
         EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
 
         //Вставляем сотрудника в БД
-        entityManager.getTransaction().begin();
-        entityManager.persist(employee); //сохраняем сущность в БД
-        entityManager.getTransaction().commit();
-
-        int employeeId = employee.getId();
-
-        entityManager.clear(); // очищаем контекст
+        int employeeId = UsefulMethodsDB.createEmployeeDB(employee);
 
         //Обновляем сотрудника через API
         UsefulMethodsAPI.updateEmployeeCityPositionAPI(employeeId, "Moscow", "AQA");
         EmployeeResponse employeeResponse = new EmployeeResponse("Moscow", employeeId, "Kseniia", "AQA", "Kalashnikova");
 
         //Ищем в БД нашего обновленного сотрудника
-        entityManager.getTransaction().begin();
-        EmployeeResponse employeeDB = entityManager.find(EmployeeResponse.class, employeeId); //ищем сущность по первичному ключу
-        entityManager.remove(employeeDB); //удаляем сущность
-        entityManager.getTransaction().commit();
+        EmployeeResponse employeeDB = UsefulMethodsDB.getEmployeeDB(employeeId);
+
+        UsefulMethodsDB.deleteEmployeeDB(employeeDB);
 
         assertThat(employeeResponse).isEqualTo(employeeDB);
 

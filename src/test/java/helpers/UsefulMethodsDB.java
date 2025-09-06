@@ -2,14 +2,15 @@ package helpers;
 
 import entities.EmployeeRequest;
 import entities.EmployeeResponse;
-import io.restassured.response.Response;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.spi.PersistenceUnitInfo;
 import manager.MyPUI;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 public class UsefulMethodsDB {
@@ -84,8 +85,19 @@ public class UsefulMethodsDB {
         return employeeDB;
     }
 
-    public static Response getEmployeesDB() {
+    public static List<EmployeeResponse> getEmployeesDB() {
 
-        return null;
+        entityManager = getEntityManager();
+
+        entityManager.getTransaction().begin();
+        TypedQuery<EmployeeResponse> query = entityManager.createQuery("SELECT em FROM EmployeeResponse em", EmployeeResponse.class); // указывать НЕ ИМЯ таблицы, а имя класса!
+        List<EmployeeResponse> employeesDB = query.getResultList();
+        entityManager.getTransaction().commit();
+
+        System.out.println("Я нашел всех сотрудников в БД");
+
+        entityManager.close();
+
+        return employeesDB;
     }
 }

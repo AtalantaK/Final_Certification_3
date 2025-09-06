@@ -1,8 +1,9 @@
 package tests.ContractAT;
 
+import entities.EmployeeRequest;
 import entities.EmployeeResponse;
 import helpers.Endpoints;
-import helpers.UsefulMethodsAPI;
+import helpers.UsefulMethodsDB;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -24,33 +25,33 @@ public class GetEmployeeByName {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        String employeeName = "Kseniia";
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", employeeName, "Senior QA", "Kalashnikova").path("id");
-
+        EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(employeeRequest);
 
         given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName).
+                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeRequest.getName()).
                 then().statusCode(200);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeResponse employeeResponse = new EmployeeResponse(employeeRequest.getCity(),employeeId, employeeRequest.getName(),employeeRequest.getPosition(),employeeRequest.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        String employeeName = "Kseniia";
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", employeeName, "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        UsefulMethodsDB.createEmployeeDB(employeeRequest);
 
         EmployeeResponse employeeResponse = given().baseUri(Endpoints.URI).
                 log().all().
-                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName).
+                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeRequest.getName()).
                 then().extract().as(EmployeeResponse.class);
 
-        assertThat(employeeResponse.getName()).isEqualTo(employeeName);
+        assertThat(employeeResponse.getName()).isEqualTo(employeeRequest.getName());
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test

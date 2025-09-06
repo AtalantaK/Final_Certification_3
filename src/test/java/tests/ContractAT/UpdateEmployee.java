@@ -1,11 +1,12 @@
 package tests.ContractAT;
 
 import entities.EmployeeRequest;
+import entities.EmployeeResponse;
 import entities.ResponseMessage;
 import entities.ValidationErrorResponse;
 import helpers.Authorization;
 import helpers.Endpoints;
-import helpers.UsefulMethodsAPI;
+import helpers.UsefulMethodsDB;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,9 +33,11 @@ public class UpdateEmployee {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Kseniia").position("AQA").surname("Kalashnikova").build();
+        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Xenia").position("AQA").surname("Ivanova").build();
+
         String token = Authorization.getToken();
 
         given().baseUri(Endpoints.URI).
@@ -44,16 +47,19 @@ public class UpdateEmployee {
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(200);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Kseniia").position("AQA").surname("Kalashnikova").build();
+        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Xenia").position("Senior QA").surname("Ivanova").build();
         String token = Authorization.getToken();
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
@@ -67,14 +73,16 @@ public class UpdateEmployee {
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Ошибка валидации данных")
     public void validationErrorTest() {
 
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
 
         String requestJSON = "{\n" +
                 "    \"city\": 123,\n" +
@@ -104,7 +112,8 @@ public class UpdateEmployee {
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeResponse employeeResponse = new EmployeeResponse(initialEmployee.getCity(), employeeId, initialEmployee.getName(), initialEmployee.getPosition(), initialEmployee.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -128,9 +137,8 @@ public class UpdateEmployee {
     @DisplayName("Обновить только Город")
     public void updateCityTest() {
 
-        System.out.println("here");
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
-        System.out.println("here 2");
+        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").build();
         String token = Authorization.getToken();
@@ -146,14 +154,16 @@ public class UpdateEmployee {
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Обновить только Имя")
     public void updateNameTest() {
 
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().name("Ivan").build();
         String token = Authorization.getToken();
@@ -169,14 +179,16 @@ public class UpdateEmployee {
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Обновить только Позицию")
     public void updatePositionTest() {
 
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().position("AQA").build();
         String token = Authorization.getToken();
@@ -192,14 +204,16 @@ public class UpdateEmployee {
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Обновить только Фамилию")
     public void updateSurnameTest() {
 
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().surname("Ivanova").build();
         String token = Authorization.getToken();
@@ -215,6 +229,7 @@ public class UpdateEmployee {
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 }

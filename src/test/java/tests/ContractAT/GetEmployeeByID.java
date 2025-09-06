@@ -1,8 +1,9 @@
 package tests.ContractAT;
 
+import entities.EmployeeRequest;
 import entities.EmployeeResponse;
 import helpers.Endpoints;
-import helpers.UsefulMethodsAPI;
+import helpers.UsefulMethodsDB;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -24,21 +25,25 @@ public class GetEmployeeByID {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(employeeRequest);
 
         given().baseUri(Endpoints.URI).
                 log().all().
                 when().get(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(200);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeResponse employeeResponse = new EmployeeResponse(employeeRequest.getCity(),employeeId, employeeRequest.getName(),employeeRequest.getPosition(),employeeRequest.getSurname());
+        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(employeeRequest);
+
         EmployeeResponse expectedEmployeeResponse = new EmployeeResponse("Samara", employeeId, "Kseniia", "Senior QA", "Kalashnikova");
 
         EmployeeResponse actualEmployeeResponse = given().baseUri(Endpoints.URI).
@@ -48,7 +53,7 @@ public class GetEmployeeByID {
 
         assertThat(expectedEmployeeResponse).isEqualTo(actualEmployeeResponse);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        UsefulMethodsDB.deleteEmployeeDB(actualEmployeeResponse);
     }
 
     @Test

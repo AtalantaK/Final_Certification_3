@@ -4,7 +4,7 @@ import entities.EmployeeRequest;
 import entities.ErrorResponse;
 import helpers.Authorization;
 import helpers.Endpoints;
-import helpers.UsefulMethods;
+import helpers.UsefulMethodsAPI;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -39,7 +39,7 @@ public class CreateEmployee {
                 then().statusCode(201).
                 extract().path("id");
 
-        UsefulMethods.deleteEmployee(id);
+        UsefulMethodsAPI.deleteEmployeeAPI(id);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class CreateEmployee {
                 body("message", is("Employee created successfully")).
                 extract().path("id");
 
-        UsefulMethods.deleteEmployee(id);
+        UsefulMethodsAPI.deleteEmployeeAPI(id);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class CreateEmployee {
 
         int id = response.path("id");
 
-        UsefulMethods.deleteEmployee(id);
+        UsefulMethodsAPI.deleteEmployeeAPI(id);
     }
 
     @Test

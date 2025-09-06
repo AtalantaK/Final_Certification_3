@@ -7,9 +7,9 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-public class UsefulMethods {
+public class UsefulMethodsAPI {
 
-    public static Response createEmployee(String city, String name, String position, String surname) {
+    public static Response createEmployeeAPI(String city, String name, String position, String surname) {
 
         RestAssured.useRelaxedHTTPSValidation();
 
@@ -31,7 +31,7 @@ public class UsefulMethods {
         return response;
     }
 
-    public static Response deleteEmployee(int employeeId) {
+    public static Response deleteEmployeeAPI(int employeeId) {
 
         RestAssured.useRelaxedHTTPSValidation();
 
@@ -47,7 +47,7 @@ public class UsefulMethods {
 
     }
 
-    public static Response getEmployeeByName(String employeeName) {
+    public static Response getEmployeeByNameAPI(String employeeName) {
 
         System.out.println("Ищу сотрудника с именем = " + employeeName + "...");
 
@@ -56,7 +56,7 @@ public class UsefulMethods {
                 when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName);
     }
 
-    public static Response getEmployeeByID(int employeeId) {
+    public static Response getEmployeeByIDAPI(int employeeId) {
 
         System.out.println("Ищу сотрудника с id = " + employeeId + "...");
 
@@ -65,7 +65,7 @@ public class UsefulMethods {
                 when().get(Endpoints.EMPLOYEE + "/" + employeeId);
     }
 
-    public static Response updateEmployeeCompletely(int employeeId, String city, String name, String position, String surname) {
+    public static Response updateEmployeeCompletelyAPI(int employeeId, String city, String name, String position, String surname) {
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().city(city).name(name).position(position).surname(surname).build();
         String token = Authorization.getToken();
@@ -79,7 +79,7 @@ public class UsefulMethods {
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId);
     }
 
-    public static Response updateEmployeeCityPosition(int employeeId, String city, String position) {
+    public static Response updateEmployeeCityPositionAPI(int employeeId, String city, String position) {
 
         System.out.println("Частично обновляю сотрудника с id = " + employeeId + "...");
 
@@ -93,7 +93,7 @@ public class UsefulMethods {
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId);
     }
 
-    public static Response getEmployees() {
+    public static Response getEmployeesAPI() {
 
         System.out.println("Получаю список всех сотрудников...");
 

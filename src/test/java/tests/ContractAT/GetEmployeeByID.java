@@ -2,7 +2,7 @@ package tests.ContractAT;
 
 import entities.EmployeeResponse;
 import helpers.Endpoints;
-import helpers.UsefulMethods;
+import helpers.UsefulMethodsAPI;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -24,21 +24,21 @@ public class GetEmployeeByID {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
 
         given().baseUri(Endpoints.URI).
                 log().all().
                 when().get(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(200);
 
-        UsefulMethods.deleteEmployee(employeeId);
+        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
     }
 
     @Test
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
         EmployeeResponse expectedEmployeeResponse = new EmployeeResponse("Samara", employeeId, "Kseniia", "Senior QA", "Kalashnikova");
 
         EmployeeResponse actualEmployeeResponse = given().baseUri(Endpoints.URI).
@@ -48,7 +48,7 @@ public class GetEmployeeByID {
 
         assertThat(expectedEmployeeResponse).isEqualTo(actualEmployeeResponse);
 
-        UsefulMethods.deleteEmployee(employeeId);
+        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
     }
 
     @Test

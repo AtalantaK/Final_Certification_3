@@ -1,7 +1,7 @@
 package tests.ContractAT;
 
 import helpers.Endpoints;
-import helpers.UsefulMethods;
+import helpers.UsefulMethodsAPI;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -23,7 +23,7 @@ public class DeleteEmployee {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
 
         given().baseUri(Endpoints.URI).
                 log().all().
@@ -36,7 +36,7 @@ public class DeleteEmployee {
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        int employeeId = UsefulMethods.createEmployee("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
+        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "Senior QA", "Kalashnikova").path("id");
 
         given().baseUri(Endpoints.URI).
                 log().all().

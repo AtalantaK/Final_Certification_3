@@ -3,7 +3,7 @@ package tests.BusinessAT;
 import entities.EmployeeRequest;
 import entities.EmployeeResponse;
 import helpers.EnvHelper;
-import helpers.UsefulMethods;
+import helpers.UsefulMethodsAPI;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.spi.PersistenceUnitInfo;
@@ -44,7 +44,7 @@ public class GetEmployeeByName {
 
         int employeeId = employee.getId();
 
-        EmployeeResponse employeeResponse = UsefulMethods.getEmployeeByName(employeeName).as(EmployeeResponse.class);
+        EmployeeResponse employeeResponse = UsefulMethodsAPI.getEmployeeByNameAPI(employeeName).as(EmployeeResponse.class);
 
         entityManager.clear(); // очищаем контекст
 

@@ -3,7 +3,7 @@ package tests.BusinessAT;
 import entities.EmployeeRequest;
 import entities.EmployeeResponse;
 import helpers.EnvHelper;
-import helpers.UsefulMethods;
+import helpers.UsefulMethodsAPI;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.spi.PersistenceUnitInfo;
@@ -45,7 +45,7 @@ public class UpdateEmployee {
         entityManager.clear(); // очищаем контекст
 
         //Обновляем сотрудника через API
-        UsefulMethods.updateEmployeeCompletely(employeeId, "Moscow", "Xenia", "AQA", "Ivanova");
+        UsefulMethodsAPI.updateEmployeeCompletelyAPI(employeeId, "Moscow", "Xenia", "AQA", "Ivanova");
         EmployeeResponse employeeResponse = new EmployeeResponse("Moscow", employeeId, "Xenia", "AQA", "Ivanova");
 
         //Ищем в БД нашего обновленного сотрудника
@@ -81,7 +81,7 @@ public class UpdateEmployee {
         entityManager.clear(); // очищаем контекст
 
         //Обновляем сотрудника через API
-        UsefulMethods.updateEmployeeCityPosition(employeeId, "Moscow", "AQA");
+        UsefulMethodsAPI.updateEmployeeCityPositionAPI(employeeId, "Moscow", "AQA");
         EmployeeResponse employeeResponse = new EmployeeResponse("Moscow", employeeId, "Kseniia", "AQA", "Kalashnikova");
 
         //Ищем в БД нашего обновленного сотрудника

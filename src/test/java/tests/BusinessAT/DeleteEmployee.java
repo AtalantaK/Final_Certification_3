@@ -1,8 +1,10 @@
 package tests.BusinessAT;
 
 import entities.EmployeeRequest;
+import entities.EmployeeResponse;
 import helpers.EnvHelper;
-import helpers.UsefulMethods;
+import helpers.UsefulMethodsAPI;
+import helpers.UsefulMethodsDB;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.spi.PersistenceUnitInfo;
@@ -19,37 +21,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Business AT. Удаление сотрудника")
 public class DeleteEmployee {
 
-    private static EntityManager entityManager;
-    private static EnvHelper envHelper;
-
     @Test
     @DisplayName("Удаление сотрудника")
-    public void deleteEmployee() throws IOException {
-        envHelper = new EnvHelper();
-        Properties properties = envHelper.getProperties();
-        PersistenceUnitInfo myPui = new MyPUI(properties);
-        HibernatePersistenceProvider hibernatePersistenceProvider = new HibernatePersistenceProvider();
-        EntityManagerFactory emf = hibernatePersistenceProvider.createContainerEntityManagerFactory(myPui, myPui.getProperties());
-        entityManager = emf.createEntityManager();
+    public void deleteEmployee() {
 
         //Создаем сотрудника
         EmployeeRequest expectedEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("QA").surname("Kalashnikova").build();
 
         //Вставляем сотрудника в БД
-        entityManager.getTransaction().begin();
-        entityManager.persist(expectedEmployee); //сохраняем сущность в БД
-        entityManager.getTransaction().commit();
+        int employeeId = UsefulMethodsDB.createEmployeeDB(expectedEmployee);
 
-        int employeeId = expectedEmployee.getId();
-
-        UsefulMethods.deleteEmployee(employeeId);
-
-        entityManager.clear(); // очищаем контекст
+        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
 
         //Ищем в БД нашего удалённого сотрудника
-        entityManager.getTransaction().begin();
-        EmployeeRequest actualEmployee = entityManager.find(EmployeeRequest.class, employeeId);  //ищем сущность по первичному ключу
-        entityManager.getTransaction().commit();
+        EmployeeResponse actualEmployee = UsefulMethodsDB.getEmployeeDB(employeeId);
 
         assertThat(actualEmployee).isNull();
     }

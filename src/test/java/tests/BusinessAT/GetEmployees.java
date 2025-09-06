@@ -1,9 +1,8 @@
 package tests.BusinessAT;
 
-import entities.EmployeeRequest;
 import entities.EmployeeResponse;
 import helpers.EnvHelper;
-import helpers.UsefulMethods;
+import helpers.UsefulMethodsAPI;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -35,7 +34,7 @@ public class GetEmployees {
         entityManager = emf.createEntityManager();
 
         //Получаем всех сотрудников через API
-        List<EmployeeResponse> employeesResponse = UsefulMethods.getEmployees().jsonPath().getList(".", EmployeeResponse.class);
+        List<EmployeeResponse> employeesResponse = UsefulMethodsAPI.getEmployeesAPI().jsonPath().getList(".", EmployeeResponse.class);
 
         //Ищем в БД нашего обновленного сотрудника
         entityManager.getTransaction().begin();

@@ -15,20 +15,20 @@ import java.util.Objects;
 public class EmployeeRequest {
 
     @Id
-    @Column
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(name = "city")
     private String city; //опциональное поле
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "position")
     private String position;
 
-    @Column
+    @Column(name = "surname")
     private String surname;
 
     public int getId() {

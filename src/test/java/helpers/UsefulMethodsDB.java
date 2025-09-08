@@ -4,6 +4,7 @@ import entities.EmployeeRequest;
 import entities.EmployeeResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.spi.PersistenceUnitInfo;
 import manager.MyPUI;
@@ -38,12 +39,13 @@ public class UsefulMethodsDB {
     public static int createEmployeeDB(EmployeeRequest employee) {
 
         entityManager = getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
 
-        entityManager.getTransaction().begin();
+        transaction.begin();
         entityManager.persist(employee); //сохраняем сущность в БД
         entityManager.flush(); // заставляем Hibernate синхронизировать состояние с БД
         int employeeId = employee.getId();
-        entityManager.getTransaction().commit();
+        transaction.commit();
 
         System.out.println("Я создал в БД сотрудника с id = " + employeeId);
 
@@ -55,12 +57,13 @@ public class UsefulMethodsDB {
     public static void deleteEmployeeDB(EmployeeResponse employee) {
 
         entityManager = getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
 
         //Удаляем из БД нашего сотрудника
-        entityManager.getTransaction().begin();
+        transaction.begin();
         EmployeeResponse foundEmployee = entityManager.find(EmployeeResponse.class, employee.getId());
         entityManager.remove(foundEmployee);
-        entityManager.getTransaction().commit();
+        transaction.commit();
 
         System.out.println("Я удалил в БД сотрудника с id = " + employee.getId());
 
@@ -70,11 +73,12 @@ public class UsefulMethodsDB {
     public static EmployeeResponse getEmployeeDB(int employeeId) {
 
         entityManager = getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
 
         //Ищем в БД нашего сотрудника
-        entityManager.getTransaction().begin();
+        transaction.begin();
         EmployeeResponse employeeDB = entityManager.find(EmployeeResponse.class, employeeId); //ищем сущность по первичному ключу
-        entityManager.getTransaction().commit();
+        transaction.commit();
 
         System.out.println("Я нашел в БД сотрудника с id = " + employeeId);
         System.out.println("Вот его данные: ");
@@ -88,11 +92,12 @@ public class UsefulMethodsDB {
     public static List<EmployeeResponse> getEmployeesDB() {
 
         entityManager = getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
 
-        entityManager.getTransaction().begin();
+        transaction.begin();
         TypedQuery<EmployeeResponse> query = entityManager.createQuery("SELECT em FROM EmployeeResponse em", EmployeeResponse.class); // указывать НЕ ИМЯ таблицы, а имя класса!
         List<EmployeeResponse> employeesDB = query.getResultList();
-        entityManager.getTransaction().commit();
+        transaction.commit();
 
         System.out.println("Я нашел всех сотрудников в БД");
 
